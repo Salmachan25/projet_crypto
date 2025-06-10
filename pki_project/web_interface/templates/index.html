@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil - PKI Management{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1><i class="fas fa-home"></i> Tableau de bord PKI</h1>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>{{ stats.total_certificates }}</h4>
+                        <p>Certificats Total</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-certificate fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>{{ stats.server_certificates }}</h4>
+                        <p>Serveurs</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-server fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>{{ stats.client_certificates }}</h4>
+                        <p>Clients</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-user fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>
+                            {% if stats.root_ca_exists and stats.intermediate_ca_exists %}
+                                <i class="fas fa-check"></i>
+                            {% else %}
+                                <i class="fas fa-times"></i>
+                            {% endif %}
+                        </h4>
+                        <p>PKI Status</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-shield-alt fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle"></i> État de la PKI</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Root CA
+                        <span class="badge bg-{{ 'success' if stats.root_ca_exists else 'danger' }} rounded-pill">
+                            {{ 'Configuré' if stats.root_ca_exists else 'Non configuré' }}
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Intermediate CA
+                        <span class="badge bg-{{ 'success' if stats.intermediate_ca_exists else 'danger' }} rounded-pill">
+                            {{ 'Configuré' if stats.intermediate_ca_exists else 'Non configuré' }}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-tools"></i> Actions rapides</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('create_certificate') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Créer un certificat
+                    </a>
+                    <a href="{{ url_for('list_certificates') }}" class="btn btn-secondary">
+                        <i class="fas fa-list"></i> Voir tous les certificats
+                    </a>
+                    <a href="{{ url_for('ca_info') }}" class="btn btn-info">
+                        <i class="fas fa-info"></i> Informations CA
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

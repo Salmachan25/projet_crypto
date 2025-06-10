@@ -1,0 +1,9 @@
+V	260601124146Z		1000	unknown	/C=MA/ST=Tanger-Tetouan-Al Hoceima/L=Tangier/O=MMSD University/OU=IT Department/CN=web.mmsd.ma
+R	260601124214Z	250601131929Z	1001	unknown	/C=MA/ST=Tanger-Tetouan-Al Hoceima/L=Tangier/O=MMSD University/OU=IT Department/CN=john.doe
+R	260601130834Z	250601131934Z	1002	unknown	/C=MA/ST=Tanger-Tetouan-Al Hoceima/L=Tangier/O=MMSD University/OU=IT Department/CN=salma.elouahabi
+R	260601131005Z	250601131923Z	1003	unknown	/C=MA/ST=Tanger-Tetouan-Al Hoceima/L=Tangier/O=MMSD University/OU=IT Department/CN=test.test
+V	260601131912Z		1004	unknown	/CN=caaaaaaa
+V	260601190804Z		1005	unknown	/CN=elouahabi.salma
+V	260601191002Z		1006	unknown	/C=MA/ST=Tanger-Tetouan-Al Hoceima/L=Tangier/O=MMSD University/OU=IT Department/CN=salma.elouhabai.ma
+V	260605184839Z		1007	unknown	/CN=test1.test
+V	260610121956Z		1008	unknown	/CN=test2.test2

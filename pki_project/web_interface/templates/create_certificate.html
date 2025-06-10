@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Créer un Certificat - PKI Management{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1><i class="fas fa-plus-circle"></i> Créer un Nouveau Certificat</h1>
+        <hr>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-certificate"></i> Formulaire de Création</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('create_certificate') }}">
+                    <div class="mb-3">
+                        <label for="type" class="form-label">Type de Certificat *</label>
+                        <select class="form-select" id="type" name="type" required>
+                            <option value="">Sélectionnez le type...</option>
+                            <option value="server">
+                                <i class="fas fa-server"></i> Certificat Serveur (TLS/SSL)
+                            </option>
+                            <option value="client">
+                                <i class="fas fa-user"></i> Certificat Client (Authentification)
+                            </option>
+                        </select>
+                        <div class="form-text">
+                            <strong>Serveur :</strong> Pour sécuriser les connexions TLS/SSL (HTTPS, FTPS, etc.)<br>
+                            <strong>Client :</strong> Pour l'authentification des utilisateurs ou applications
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="common_name" class="form-label">Nom Commun (Common Name) *</label>
+                        <input type="text" class="form-control" id="common_name" name="common_name" required
+                               placeholder="Exemple: www.example.com ou john.doe">
+                        <div class="form-text">
+                            <strong>Pour un serveur :</strong> Nom de domaine complet (FQDN) comme www.example.com<br>
+                            <strong>Pour un client :</strong> Nom d'utilisateur ou identifiant unique
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-info-circle"></i> Informations Techniques</h6>
+                        <ul class="mb-0">
+                            <li><strong>Algorithme :</strong> RSA 2048 bits</li>
+                            <li><strong>Fonction de hachage :</strong> SHA-256</li>
+                            <li><strong>Durée de validité :</strong> 1 an (365 jours)</li>
+                            <li><strong>Autorité émettrice :</strong> Intermediate CA</li>
+                        </ul>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <h6><i class="fas fa-exclamation-triangle"></i> Important</h6>
+                        <p class="mb-0">
+                            La création d'un certificat nécessite la saisie du mot de passe de l'Intermediate CA. 
+                            Assurez-vous que l'autorité intermédiaire est correctement configurée avant de continuer.
+                        </p>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('list_certificates') }}" class="btn btn-secondary me-md-2">
+                            <i class="fas fa-arrow-left"></i> Retour
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Créer le Certificat
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h6><i class="fas fa-lightbulb"></i> Conseils pour les Certificats Serveur</h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check text-success"></i> Utilisez le FQDN complet (ex: mail.domain.com)</li>
+                    <li><i class="fas fa-check text-success"></i> Évitez les caractères spéciaux</li>
+                    <li><i class="fas fa-check text-success"></i> Respectez la casse du domaine</li>
+                    <li><i class="fas fa-check text-success"></i> Vérifiez la résolution DNS</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h6><i class="fas fa-lightbulb"></i> Conseils pour les Certificats Client</h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check text-success"></i> Format: prenom.nom ou username</li>
+                    <li><i class="fas fa-check text-success"></i> Utilisez des identifiants uniques</li>
+                    <li><i class="fas fa-check text-success"></i> Évitez les espaces</li>
+                    <li><i class="fas fa-check text-success"></i> Respectez la politique de nommage</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('type').addEventListener('change', function() {
+    const commonNameInput = document.getElementById('common_name');
+    const type = this.value;
+    
+    if (type === 'server') {
+        commonNameInput.placeholder = 'Exemple: www.example.com, mail.domain.org';
+    } else if (type === 'client') {
+        commonNameInput.placeholder = 'Exemple: john.doe, user123, alice.smith';
+    } else {
+        commonNameInput.placeholder = 'Sélectionnez d\'abord le type de certificat';
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Set Passphrase - PKI Management{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1><i class="fas fa-key"></i> Set Intermediate CA Passphrase</h1>
+        <hr>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-lock"></i> Enter Passphrase</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-info-circle"></i> Information</h6>
+                    <p class="mb-0">
+                        This passphrase will be stored in memory during your session to automatically 
+                        sign certificates. It will be cleared when you restart the application.
+                    </p>
+                </div>
+
+                <form method="POST" action="{{ url_for('set_passphrase') }}">
+                    <div class="mb-3">
+                        <label for="passphrase" class="form-label">Intermediate CA Passphrase *</label>
+                        <input type="password" class="form-control" id="passphrase" name="passphrase" required
+                               placeholder="Enter the intermediate CA private key passphrase">
+                        <div class="form-text">
+                            This is the passphrase you used when creating the intermediate CA private key.
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <h6><i class="fas fa-exclamation-triangle"></i> Security Note</h6>
+                        <p class="mb-0">
+                            The passphrase will be stored in memory only and will not be saved to disk. 
+                            You'll need to re-enter it each time you restart the application.
+                        </p>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary me-md-2">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-check"></i> Set Passphrase
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h6><i class="fas fa-lightbulb"></i> Alternative Solutions</h6>
+            </div>
+            <div class="card-body">
+                <h6>For Production Environments:</h6>
+                <ul>
+                    <li><strong>Environment Variable:</strong> Set INTERMEDIATE_CA_PASSPHRASE environment variable</li>
+                    <li><strong>Configuration File:</strong> Store in a secure configuration file with restricted permissions</li>
+                    <li><strong>Key Management Service:</strong> Use a dedicated key management solution</li>
+                    <li><strong>Remove Passphrase:</strong> Remove passphrase from intermediate CA key (less secure)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

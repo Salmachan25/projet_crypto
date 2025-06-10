@@ -1,0 +1,351 @@
+{% extends "base.html" %}
+
+{% block title %}Certificate Authorities Info - PKI Management{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1><i class="fas fa-certificate"></i> Certificate Authorities Information</h1>
+        <hr>
+    </div>
+</div>
+
+<!-- Root CA Information -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5><i class="fas fa-crown"></i> Root Certificate Authority</h5>
+            </div>
+            <div class="card-body">
+                {% if root_ca %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-info-circle"></i> Certificate Details</h6>
+                            <table class="table table-sm">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Subject:</strong></td>
+                                        <td><code>{{ root_ca.subject }}</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Issuer:</strong></td>
+                                        <td><code>{{ root_ca.issuer }}</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Serial Number:</strong></td>
+                                        <td><code>{{ root_ca.serial_number }}</code></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-calendar-alt"></i> Validity Period</h6>
+                            <table class="table table-sm">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Valid From:</strong></td>
+                                        <td>{{ root_ca.not_valid_before.strftime('%Y-%m-%d %H:%M:%S UTC') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Valid Until:</strong></td>
+                                        <td>{{ root_ca.not_valid_after.strftime('%Y-%m-%d %H:%M:%S UTC') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Status:</strong></td>
+                                        <td>
+                                            {% if root_ca.is_expired %}
+                                                <span class="badge bg-danger">Expired</span>
+                                            {% else %}
+                                                <span class="badge bg-success">Valid</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h6><i class="fas fa-download"></i> Downloads</h6>
+                            <div class="btn-group" role="group">
+                                <a href="{{ url_for('download_crl', ca_type='root') }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-list"></i> Download Root CRL
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning">
+                        <h6><i class="fas fa-exclamation-triangle"></i> Root CA Not Found</h6>
+                        <p class="mb-0">
+                            The Root Certificate Authority certificate was not found. Please ensure that the PKI has been properly initialized.
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Intermediate CA Information -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5><i class="fas fa-link"></i> Intermediate Certificate Authority</h5>
+            </div>
+            <div class="card-body">
+                {% if intermediate_ca %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-info-circle"></i> Certificate Details</h6>
+                            <table class="table table-sm">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Subject:</strong></td>
+                                        <td><code>{{ intermediate_ca.subject }}</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Issuer:</strong></td>
+                                        <td><code>{{ intermediate_ca.issuer }}</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Serial Number:</strong></td>
+                                        <td><code>{{ intermediate_ca.serial_number }}</code></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-calendar-alt"></i> Validity Period</h6>
+                            <table class="table table-sm">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Valid From:</strong></td>
+                                        <td>{{ intermediate_ca.not_valid_before.strftime('%Y-%m-%d %H:%M:%S UTC') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Valid Until:</strong></td>
+                                        <td>{{ intermediate_ca.not_valid_after.strftime('%Y-%m-%d %H:%M:%S UTC') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Status:</strong></td>
+                                        <td>
+                                            {% if intermediate_ca.is_expired %}
+                                                <span class="badge bg-danger">Expired</span>
+                                            {% else %}
+                                                <span class="badge bg-success">Valid</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h6><i class="fas fa-download"></i> Downloads</h6>
+                            <div class="btn-group" role="group">
+                                <a href="{{ url_for('download_crl', ca_type='intermediate') }}" class="btn btn-outline-success btn-sm">
+                                    <i class="fas fa-list"></i> Download Intermediate CRL
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning">
+                        <h6><i class="fas fa-exclamation-triangle"></i> Intermediate CA Not Found</h6>
+                        <p class="mb-0">
+                            The Intermediate Certificate Authority certificate was not found. Please ensure that the PKI has been properly initialized.
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PKI Hierarchy Diagram -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-sitemap"></i> PKI Hierarchy</h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <div class="hierarchy-diagram">
+                        <div class="ca-level">
+                            <div class="ca-box root-ca">
+                                <i class="fas fa-crown fa-2x"></i>
+                                <h6>Root CA</h6>
+                                {% if root_ca %}
+                                    <small class="text-muted">{{ root_ca.subject.split(',')[0].split('=')[1] if '=' in root_ca.subject.split(',')[0] else 'Root CA' }}</small>
+                                    <br>
+                                    <span class="badge {% if root_ca.is_expired %}bg-danger{% else %}bg-success{% endif %}">
+                                        {% if root_ca.is_expired %}Expired{% else %}Active{% endif %}
+                                    </span>
+                                {% else %}
+                                    <small class="text-danger">Not Found</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="hierarchy-arrow">
+                            <i class="fas fa-arrow-down fa-2x text-muted"></i>
+                        </div>
+                        
+                        <div class="ca-level">
+                            <div class="ca-box intermediate-ca">
+                                <i class="fas fa-link fa-2x"></i>
+                                <h6>Intermediate CA</h6>
+                                {% if intermediate_ca %}
+                                    <small class="text-muted">{{ intermediate_ca.subject.split(',')[0].split('=')[1] if '=' in intermediate_ca.subject.split(',')[0] else 'Intermediate CA' }}</small>
+                                    <br>
+                                    <span class="badge {% if intermediate_ca.is_expired %}bg-danger{% else %}bg-success{% endif %}">
+                                        {% if intermediate_ca.is_expired %}Expired{% else %}Active{% endif %}
+                                    </span>
+                                {% else %}
+                                    <small class="text-danger">Not Found</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="hierarchy-arrow">
+                            <i class="fas fa-arrow-down fa-2x text-muted"></i>
+                        </div>
+                        
+                        <div class="ca-level">
+                            <div class="certificate-types">
+                                <div class="cert-type-box">
+                                    <i class="fas fa-server"></i>
+                                    <small>Server Certificates</small>
+                                </div>
+                                <div class="cert-type-box">
+                                    <i class="fas fa-user"></i>
+                                    <small>Client Certificates</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Security Information -->
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h6><i class="fas fa-shield-alt"></i> Security Information</h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check text-success"></i> <strong>Algorithm:</strong> RSA 2048-bit</li>
+                    <li><i class="fas fa-check text-success"></i> <strong>Hash Function:</strong> SHA-256</li>
+                    <li><i class="fas fa-check text-success"></i> <strong>Certificate Chain:</strong> Root → Intermediate → End Entity</li>
+                    <li><i class="fas fa-check text-success"></i> <strong>CRL Support:</strong> Available for both CAs</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h6><i class="fas fa-exclamation-triangle"></i> Security Recommendations</h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-info-circle text-info"></i> Keep Root CA offline when possible</li>
+                    <li><i class="fas fa-info-circle text-info"></i> Regularly update Certificate Revocation Lists</li>
+                    <li><i class="fas fa-info-circle text-info"></i> Monitor certificate expiration dates</li>
+                    <li><i class="fas fa-info-circle text-info"></i> Secure private key storage with strong passphrases</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12 text-center">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+        <a href="{{ url_for('list_certificates') }}" class="btn btn-primary">
+            <i class="fas fa-list"></i> View Certificates
+        </a>
+    </div>
+</div>
+
+<style>
+.hierarchy-diagram {
+    padding: 20px;
+}
+
+.ca-level {
+    margin: 20px 0;
+}
+
+.ca-box {
+    display: inline-block;
+    padding: 20px;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    min-width: 200px;
+    text-align: center;
+}
+
+.ca-box.root-ca {
+    border-color: #0d6efd;
+    background-color: #e7f1ff;
+}
+
+.ca-box.intermediate-ca {
+    border-color: #198754;
+    background-color: #e8f5e8;
+}
+
+.hierarchy-arrow {
+    margin: 10px 0;
+}
+
+.certificate-types {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.cert-type-box {
+    padding: 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    text-align: center;
+    min-width: 120px;
+}
+
+.cert-type-box i {
+    display: block;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #6c757d;
+}
+
+@media (max-width: 768px) {
+    .certificate-types {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .ca-box {
+        min-width: 150px;
+    }
+}
+</style>
+{% endblock %}
